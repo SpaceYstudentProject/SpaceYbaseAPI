@@ -1,0 +1,746 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "SpaceX"
+
+host: "api.spacexdata.com"
+basePath: "/v4"
+tags:
+- name: "Capsules"
+  description: "Detailed info for serialized dragon capsules"
+schemes:
+- "https"
+- "http"
+paths:
+  /capsules:
+    get:
+      tags:
+      - "Capsules"
+      summary: "Get all capsules"
+      description: "Auth required : False"
+      responses:
+        "100":
+          description: "Continue"
+        "101":
+          description: "Switching Protocol"
+        "102":
+          description: "Processing"
+        "103":
+          description: "Early Hints"
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Capsule"
+        "201":
+          description: "Created"
+        "202":
+          description: "Accepted"
+        "203":
+          description: "Non-Authoritative Information"
+        "204":
+          description: "No Content"
+        "205":
+          description: "Reset Content" 
+        "206":
+          description: "Partial Content"
+        "300":
+          description: "Multiple Choice"
+        "301":
+          description: "Moved Permanently"
+        "302":
+          description: "Found"
+        "303":
+          description: "See Other"           
+        "304":
+          description: "Not Modified"
+        "305":
+          description: "Use Proxy"
+        "306":
+          description: "Switch Proxy"
+        "307":
+          description: "Temporary Redirect"
+        "308":
+          description: "Permanent Redirect"
+        "400":
+          description: "Bad Request"
+        "401":
+          description: "Unauthorized"
+        "402":
+          description: "Payment Required"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+        "405":
+          description: "Method Not Allowed"
+        "406":
+          description: "Not Acceptable"
+        "407":
+          description: "Proxy Authentication Required"
+        "408":
+          description: "Request Timeout"
+        "409":
+          description: "Conflict"
+        "410":
+          description: "Gone" 
+        "411":
+          description: "Length Required"
+        "412":
+          description: "Precondition Failed"
+        "413":
+          description: "Request Entity Too Large"
+        "414":
+          description: "Request-URI Too Long"
+        "415":
+          description: "Unsupported Media Type"           
+        "416":
+          description: "Requested Range Not Satisfiable"
+        "417":
+          description: "Expectation Failed"
+        "500":
+          description: "Internal Server Error"
+        "501":
+          description: "Not Implemented"
+        "502":
+          description: "Bad Gateway"
+        "503":
+          description: "Service Unavailable" 
+        "504":
+          description: "Gateway Timeout"
+        "505":
+          description: "HTTP Version Not Supported"           
+          
+  /capsules/{id}:
+    get:
+      tags:
+      - "Capsules"
+      summary: "Get one capsule"
+      description: "Auth required : False"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "100":
+          description: "Continue"
+        "101":
+          description: "Switching Protocol"
+        "102":
+          description: "Processing"
+        "103":
+          description: "Early Hints"
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Capsule"
+        "201":
+          description: "Created"
+        "202":
+          description: "Accepted"
+        "203":
+          description: "Non-Authoritative Information"
+        "204":
+          description: "No Content"
+        "205":
+          description: "Reset Content" 
+        "206":
+          description: "Partial Content"
+        "300":
+          description: "Multiple Choice"
+        "301":
+          description: "Moved Permanently"
+        "302":
+          description: "Found"
+        "303":
+          description: "See Other"           
+        "304":
+          description: "Not Modified"
+        "305":
+          description: "Use Proxy"
+        "306":
+          description: "Switch Proxy"
+        "307":
+          description: "Temporary Redirect"
+        "308":
+          description: "Permanent Redirect"
+        "400":
+          description: "Bad Request"
+        "401":
+          description: "Unauthorized"
+        "402":
+          description: "Payment Required"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+        "405":
+          description: "Method Not Allowed"
+        "406":
+          description: "Not Acceptable"
+        "407":
+          description: "Proxy Authentication Required"
+        "408":
+          description: "Request Timeout"
+        "409":
+          description: "Conflict"
+        "410":
+          description: "Gone" 
+        "411":
+          description: "Length Required"
+        "412":
+          description: "Precondition Failed"
+        "413":
+          description: "Request Entity Too Large"
+        "414":
+          description: "Request-URI Too Long"
+        "415":
+          description: "Unsupported Media Type"           
+        "416":
+          description: "Requested Range Not Satisfiable"
+        "417":
+          description: "Expectation Failed"
+        "500":
+          description: "Internal Server Error"
+        "501":
+          description: "Not Implemented"
+        "502":
+          description: "Bad Gateway"
+        "503":
+          description: "Service Unavailable" 
+        "504":
+          description: "Gateway Timeout"
+        "505":
+          description: "HTTP Version Not Supported"           
+                  
+  /company:
+    get:
+      tags:
+      - "Company info"
+      summary: "Get detailed info about SpaceX as a company"
+      description: "Auth required : False"
+      produces:
+      - "application/xml"
+      - "application/json"
+      responses:
+        "100":
+          description: "Continue"
+        "101":
+          description: "Switching Protocol"
+        "102":
+          description: "Processing"
+        "103":
+          description: "Early Hints"        
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Company"
+        "201":
+          description: "Created"
+        "202":
+          description: "Accepted"
+        "203":
+          description: "Non-Authoritative Information"
+        "204":
+          description: "No Content"
+        "205":
+          description: "Reset Content" 
+        "206":
+          description: "Partial Content"
+        "300":
+          description: "Multiple Choice"
+        "301":
+          description: "Moved Permanently"
+        "302":
+          description: "Found"
+        "303":
+          description: "See Other"           
+        "304":
+          description: "Not Modified"
+        "305":
+          description: "Use Proxy"
+        "306":
+          description: "Switch Proxy"
+        "307":
+          description: "Temporary Redirect"
+        "308":
+          description: "Permanent Redirect"
+        "400":
+          description: "Bad Request"
+        "401":
+          description: "Unauthorized"
+        "402":
+          description: "Payment Required"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+        "405":
+          description: "Method Not Allowed"
+        "406":
+          description: "Not Acceptable"
+        "407":
+          description: "Proxy Authentication Required"
+        "408":
+          description: "Request Timeout"
+        "409":
+          description: "Conflict"
+        "410":
+          description: "Gone" 
+        "411":
+          description: "Length Required"
+        "412":
+          description: "Precondition Failed"
+        "413":
+          description: "Request Entity Too Large"
+        "414":
+          description: "Request-URI Too Long"
+        "415":
+          description: "Unsupported Media Type"           
+        "416":
+          description: "Requested Range Not Satisfiable"
+        "417":
+          description: "Expectation Failed"
+        "500":
+          description: "Internal Server Error"
+        "501":
+          description: "Not Implemented"
+        "502":
+          description: "Bad Gateway"
+        "503":
+          description: "Service Unavailable" 
+        "504":
+          description: "Gateway Timeout"
+        "505":
+          description: "HTTP Version Not Supported"  
+          
+  /history:
+    get:
+      tags:
+      - "History"
+      summary: "Get detailed info on SpaceX historical events"
+      description: "Auth required : False"
+      produces:
+      - "application/xml"
+      - "application/json"
+      responses:
+        "100":
+          description: "Continue"
+        "101":
+          description: "Switching Protocol"
+        "102":
+          description: "Processing"
+        "103":
+          description: "Early Hints"      
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/History"
+        "201":
+          description: "Created"
+        "202":
+          description: "Accepted"
+        "203":
+          description: "Non-Authoritative Information"
+        "204":
+          description: "No Content"
+        "205":
+          description: "Reset Content" 
+        "206":
+          description: "Partial Content"
+        "300":
+          description: "Multiple Choice"
+        "301":
+          description: "Moved Permanently"
+        "302":
+          description: "Found"
+        "303":
+          description: "See Other"           
+        "304":
+          description: "Not Modified"
+        "305":
+          description: "Use Proxy"
+        "306":
+          description: "Switch Proxy"
+        "307":
+          description: "Temporary Redirect"
+        "308":
+          description: "Permanent Redirect"
+        "400":
+          description: "Bad Request"
+        "401":
+          description: "Unauthorized"
+        "402":
+          description: "Payment Required"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+        "405":
+          description: "Method Not Allowed"
+        "406":
+          description: "Not Acceptable"
+        "407":
+          description: "Proxy Authentication Required"
+        "408":
+          description: "Request Timeout"
+        "409":
+          description: "Conflict"
+        "410":
+          description: "Gone" 
+        "411":
+          description: "Length Required"
+        "412":
+          description: "Precondition Failed"
+        "413":
+          description: "Request Entity Too Large"
+        "414":
+          description: "Request-URI Too Long"
+        "415":
+          description: "Unsupported Media Type"           
+        "416":
+          description: "Requested Range Not Satisfiable"
+        "417":
+          description: "Expectation Failed"
+        "500":
+          description: "Internal Server Error"
+        "501":
+          description: "Not Implemented"
+        "502":
+          description: "Bad Gateway"
+        "503":
+          description: "Service Unavailable" 
+        "504":
+          description: "Gateway Timeout"
+        "505":
+          description: "HTTP Version Not Supported"      
+  
+  /rockets:
+    get:
+      tags:
+      - "Rockets"
+      summary: "Get detailed info about rocket versions"
+      description: "Auth required : False"
+      produces:
+      - "application/xml"
+      - "application/json"
+      responses:
+        "100":
+          description: "Continue"
+        "101":
+          description: "Switching Protocol"
+        "102":
+          description: "Processing"
+        "103":
+          description: "Early Hints"      
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Rocket"
+        "201":
+          description: "Created"
+        "202":
+          description: "Accepted"
+        "203":
+          description: "Non-Authoritative Information"
+        "204":
+          description: "No Content"
+        "205":
+          description: "Reset Content" 
+        "206":
+          description: "Partial Content"
+        "300":
+          description: "Multiple Choice"
+        "301":
+          description: "Moved Permanently"
+        "302":
+          description: "Found"
+        "303":
+          description: "See Other"           
+        "304":
+          description: "Not Modified"
+        "305":
+          description: "Use Proxy"
+        "306":
+          description: "Switch Proxy"
+        "307":
+          description: "Temporary Redirect"
+        "308":
+          description: "Permanent Redirect"
+        "400":
+          description: "Bad Request"
+        "401":
+          description: "Unauthorized"
+        "402":
+          description: "Payment Required"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+        "405":
+          description: "Method Not Allowed"
+        "406":
+          description: "Not Acceptable"
+        "407":
+          description: "Proxy Authentication Required"
+        "408":
+          description: "Request Timeout"
+        "409":
+          description: "Conflict"
+        "410":
+          description: "Gone" 
+        "411":
+          description: "Length Required"
+        "412":
+          description: "Precondition Failed"
+        "413":
+          description: "Request Entity Too Large"
+        "414":
+          description: "Request-URI Too Long"
+        "415":
+          description: "Unsupported Media Type"           
+        "416":
+          description: "Requested Range Not Satisfiable"
+        "417":
+          description: "Expectation Failed"
+        "500":
+          description: "Internal Server Error"
+        "501":
+          description: "Not Implemented"
+        "502":
+          description: "Bad Gateway"
+        "503":
+          description: "Service Unavailable" 
+        "504":
+          description: "Gateway Timeout"
+        "505":
+          description: "HTTP Version Not Supported"      
+    post:
+      tags:
+      - "Rockets"
+      summary: "Create a rocket"
+      description: "Auth required : False"
+      produces:
+      - "application/xml"
+      - "application/json"
+      responses:
+        "100":
+          description: "Continue"
+        "101":
+          description: "Switching Protocol"
+        "102":
+          description: "Processing"
+        "103":
+          description: "Early Hints"      
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Rocket" 
+        "201":
+          description: "Created"
+        "202":
+          description: "Accepted"
+        "203":
+          description: "Non-Authoritative Information"
+        "204":
+          description: "No Content"
+        "205":
+          description: "Reset Content" 
+        "206":
+          description: "Partial Content"
+        "300":
+          description: "Multiple Choice"
+        "301":
+          description: "Moved Permanently"
+        "302":
+          description: "Found"
+        "303":
+          description: "See Other"           
+        "304":
+          description: "Not Modified"
+        "305":
+          description: "Use Proxy"
+        "306":
+          description: "Switch Proxy"
+        "307":
+          description: "Temporary Redirect"
+        "308":
+          description: "Permanent Redirect"
+        "400":
+          description: "Bad Request"
+        "401":
+          description: "Unauthorized"
+        "402":
+          description: "Payment Required"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+        "405":
+          description: "Method Not Allowed"
+        "406":
+          description: "Not Acceptable"
+        "407":
+          description: "Proxy Authentication Required"
+        "408":
+          description: "Request Timeout"
+        "409":
+          description: "Conflict"
+        "410":
+          description: "Gone" 
+        "411":
+          description: "Length Required"
+        "412":
+          description: "Precondition Failed"
+        "413":
+          description: "Request Entity Too Large"
+        "414":
+          description: "Request-URI Too Long"
+        "415":
+          description: "Unsupported Media Type"           
+        "416":
+          description: "Requested Range Not Satisfiable"
+        "417":
+          description: "Expectation Failed"
+        "500":
+          description: "Internal Server Error"
+        "501":
+          description: "Not Implemented"
+        "502":
+          description: "Bad Gateway"
+        "503":
+          description: "Service Unavailable" 
+        "504":
+          description: "Gateway Timeout"
+        "505":
+          description: "HTTP Version Not Supported"
+      security:
+      - api_key: []  
+      
+securityDefinitions:
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+definitions:
+  Capsule:
+    properties:
+      reuse_count:
+        type: "integer"
+      water_landings:
+        type: "integer"          
+      land_landings:
+        type: "integer"
+      last_update:
+        type: "string"
+      launches:
+        type: "array"
+      serial:
+        type: "string"          
+      status:
+        type: "string"         
+      type:
+        type: "string"
+      id:       
+        type: "string" 
+  Company:
+    properties:
+      headquarters:
+        type: "object"
+        properties:
+          address:
+            type: "string"
+          city:  
+            type: "string"
+          state:  
+            type: "string"
+      links:
+        type: "object"
+        properties:
+          website:
+            type: "string"
+          flickr:  
+            type: "string"
+          twitter:  
+            type: "string" 
+          elon_twitter:  
+            type: "string" 
+      name:
+        type: "string"
+      founder:
+        type: "string"
+      founded:
+        type: "integer"
+      employees:
+        type: "integer" 
+      vehicles:
+        type: "integer"
+      launch_sites:
+        type: "integer"
+      test_sites:
+        type: "integer"        
+      ceo:
+        type: "string" 
+      cto:
+        type: "string"
+      coo:
+        type: "string"
+      cto_propulsion:
+        type: "string"
+      valuation:
+        type: "integer"
+      summary:
+        type: "string"
+      id:
+        type: "string"
+  History:
+    properties:
+      title:
+        type: "integer"
+      event_date_utc:
+        type: "string"
+      event_date_unix:
+        type: "integer"
+      details:
+        type: "string"
+      links:
+        type: "object"
+        properties:
+          article:
+            type: "string"
+  Rocket:
+    properties:
+      name:
+        type: "string"
+      type:
+        type: "string"
+      active:
+        type: "integer"
+      stages:
+        type: "integer"
+      boosters:
+        type: "integer"
+      cost_per_launch:
+        type: "integer"
+      success_rate_pct:
+        type: "integer"
+      first_flight:
+        type: "string"
+      country:
+        type: "string"
+      company:
+        type: "string"
+      wikipedia:
+        type: "string"
+      description:
+        type: "string"
+      id:
+        type: "string"
