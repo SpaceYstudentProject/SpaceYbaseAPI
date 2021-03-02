@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/spacey/api/user/")
 public class UserInfoRestControllerV1 {
-//
+
     private final UserService userService;
 
     @Autowired
