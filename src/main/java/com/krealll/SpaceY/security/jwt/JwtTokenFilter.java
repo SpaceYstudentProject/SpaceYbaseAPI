@@ -2,18 +2,22 @@ package com.krealll.SpaceY.security.jwt;
 
 import com.krealll.SpaceY.security.exception.JwtAuthenticationException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Slf4j
+@Component
 public class JwtTokenFilter extends GenericFilter {
 
-    private JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
     public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
@@ -23,17 +27,15 @@ public class JwtTokenFilter extends GenericFilter {
             throws IOException, ServletException {
 
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) req);
-        try {
-            if (token != null && jwtTokenProvider.validateToken(token)) {
-                Authentication auth = jwtTokenProvider.getAuthentication(token);
 
-                if (auth != null) {
-                    SecurityContextHolder.getContext().setAuthentication(auth);
-                }
+        if (token != null && jwtTokenProvider.validateToken(token)) {
+            Authentication auth = jwtTokenProvider.getAuthentication(token);
+
+            if (auth != null) {
+                SecurityContextHolder.getContext().setAuthentication(auth);
             }
-        } catch (JwtAuthenticationException e) {
-            log.warn("Something wrong in Token filter");
         }
+
         filterChain.doFilter(req, res);
     }
 }

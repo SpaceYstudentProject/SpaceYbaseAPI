@@ -13,10 +13,9 @@ import java.util.List;
 @Data
 public class Role extends BaseEntity{
 
-    //Test
-
     private String name;
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     private List<User> users;
+
 }

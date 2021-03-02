@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
             log.warn("No such user: {}", id);
             return null;
         }
-        return null;
+        return result;
     }
 
     @Override

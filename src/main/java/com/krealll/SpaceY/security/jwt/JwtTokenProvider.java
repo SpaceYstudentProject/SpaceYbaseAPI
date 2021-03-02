@@ -5,6 +5,7 @@ import com.krealll.SpaceY.security.JwtUserDetailsService;
 import com.krealll.SpaceY.security.exception.JwtAuthenticationException;
 import io.jsonwebtoken.*;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
@@ -23,6 +24,7 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @Component
 public class JwtTokenProvider {
 
@@ -77,16 +79,22 @@ public class JwtTokenProvider {
         return null;
     }
 
-    public boolean validateToken (String token) throws JwtAuthenticationException {
+    public boolean validateToken (String token) {
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-            if (claims.getBody().getExpiration().before(new Date())) {
-                return false;
-            }
+            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
             return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new JwtAuthenticationException("JWT token is expired or invalid");
+        } catch (ExpiredJwtException e){
+            log.warn("Token -" + token + " was expired");
+        } catch (UnsupportedJwtException e){
+            log.warn("Unsupported jwt exception");
+        } catch (MalformedJwtException e){
+            log.warn("Token is malformed");
+        } catch (SignatureException e){
+            log.warn("Invalid token signature");
+        } catch (Exception e){
+            log.warn("Invalid token");
         }
+        return false;
     }
 
     private List<String> getRoleNames( List<Role> roles){
