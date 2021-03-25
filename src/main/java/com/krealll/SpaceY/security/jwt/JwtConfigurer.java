@@ -1,5 +1,6 @@
 package com.krealll.SpaceY.security.jwt;
 
+import com.krealll.SpaceY.security.TokenProvider;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;
@@ -7,9 +8,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 public class JwtConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
-    private JwtTokenProvider tokenProvider;
+    private TokenProvider tokenProvider;
 
-    public JwtConfigurer(JwtTokenProvider tokenProvider) {
+    public JwtConfigurer(TokenProvider tokenProvider) {
         this.tokenProvider = tokenProvider;
     }
 

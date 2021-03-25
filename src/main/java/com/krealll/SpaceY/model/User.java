@@ -25,4 +25,7 @@ public class User  extends BaseEntity{
 
             inverseJoinColumns = @JoinColumn(name = "roles_id_role", referencedColumnName = "id"))
     private List<Role> roles;
+
+    @OneToMany(targetEntity = RefreshToken.class)
+    private List<RefreshToken> tokens;
 }

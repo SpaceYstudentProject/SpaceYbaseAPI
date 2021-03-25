@@ -5,7 +5,6 @@ import com.krealll.SpaceY.model.User;
 import com.krealll.SpaceY.repository.RoleRepository;
 import com.krealll.SpaceY.repository.UserRepository;
 import com.krealll.SpaceY.service.UserService;
-import liquibase.pro.packaged.A;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

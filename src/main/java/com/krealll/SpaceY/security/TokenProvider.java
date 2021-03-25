@@ -1,37 +1,34 @@
-package com.krealll.SpaceY.security.jwt;
+package com.krealll.SpaceY.security;
 
 import com.krealll.SpaceY.model.Role;
-import com.krealll.SpaceY.security.JwtUserDetailsService;
-import com.krealll.SpaceY.security.exception.JwtAuthenticationException;
 import io.jsonwebtoken.*;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Component
-public class JwtTokenProvider {
+public class TokenProvider {
 
     @Value("${jwt.token.secret}")
     private String secret;
 
-    @Value("${jwt.token.expired}")
+    @Value("${spacey.ref.len}")
+    private String refTokenLength;
+
+    @Value("${spacey.jwt.ttl}")
     private Long timeToLive;
 
     @Autowired
@@ -50,7 +47,7 @@ public class JwtTokenProvider {
 
     public  String createToken(String login , List<Role> roles){
         Claims claims = Jwts.claims().setSubject(login);
-        claims.put("roles",getRoleNames(roles));
+        claims.put("authorities", TokenInfoFactory.mapToGrantedAuthorities(roles));
         Date current = new Date();
         Date expirationTime = new Date(current.getTime() + timeToLive);
         return Jwts.builder()
@@ -62,14 +59,28 @@ public class JwtTokenProvider {
 
     }
 
+
     public Authentication getAuthentication(String token){
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(getLogin(token));
+        Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+//        for (int i = 0; i < authorities.size(); i++) {
+            log.info("Users authorities - " + authorities.toString());
+//        }
         return new UsernamePasswordAuthenticationToken(userDetails,"", userDetails.getAuthorities());
     }
 
     public String getLogin(String token){
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
     }
+
+    public List<String> getRoles(String token){
+        List<String> roles = (List<String>)Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().get("roles");
+        if(roles == null){
+            log.error("ERRRRRRRR");
+        }
+        return roles;
+    }
+
 
     public String resolveToken(HttpServletRequest request){
         String bearerToken = request.getHeader("Authorization");
@@ -81,7 +92,7 @@ public class JwtTokenProvider {
 
     public boolean validateToken (String token) {
         try {
-            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
             return true;
         } catch (ExpiredJwtException e){
             log.warn("Token -" + token + " was expired");

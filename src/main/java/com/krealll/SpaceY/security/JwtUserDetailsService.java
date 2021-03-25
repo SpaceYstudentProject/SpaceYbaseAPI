@@ -2,7 +2,6 @@ package com.krealll.SpaceY.security;
 
 import com.krealll.SpaceY.model.User;
 import com.krealll.SpaceY.security.jwt.JwtUser;
-import com.krealll.SpaceY.security.jwt.JwtUserFactory;
 import com.krealll.SpaceY.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,8 @@ public class JwtUserDetailsService  implements UserDetailsService {
         if(user == null){
             throw new UsernameNotFoundException("User with login :" + s + " not found");
         }
-        JwtUser jwtUser = JwtUserFactory.create(user);
+        JwtUser jwtUser = TokenInfoFactory.create(user);
+
         log.info("IN loadUserByUsername user with login: {} was loaded", user.getLogin());
         return jwtUser;
     }

@@ -1,6 +1,6 @@
 package com.krealll.SpaceY.security.jwt;
 
-import com.krealll.SpaceY.security.exception.JwtAuthenticationException;
+import com.krealll.SpaceY.security.TokenProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -15,22 +15,21 @@ import java.io.IOException;
 @Component
 public class JwtTokenFilter extends GenericFilter {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenProvider tokenProvider;
 
     @Autowired
-    public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
+    public JwtTokenFilter(TokenProvider tokenProvider) {
+        this.tokenProvider = tokenProvider;
     }
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain)
             throws IOException, ServletException {
 
-        String token = jwtTokenProvider.resolveToken((HttpServletRequest) req);
+        String token = tokenProvider.resolveToken((HttpServletRequest) req);
 
-        if (token != null && jwtTokenProvider.validateToken(token)) {
-            Authentication auth = jwtTokenProvider.getAuthentication(token);
-
+        if (token != null && tokenProvider.validateToken(token)) {
+            Authentication auth = tokenProvider.getAuthentication(token);
             if (auth != null) {
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }

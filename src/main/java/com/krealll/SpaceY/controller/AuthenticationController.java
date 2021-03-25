@@ -1,0 +1,57 @@
+package com.krealll.SpaceY.controller;
+
+import com.krealll.SpaceY.model.User;
+
+import com.krealll.SpaceY.model.dto.LoginDTO;
+import com.krealll.SpaceY.security.TokenProvider;
+import com.krealll.SpaceY.service.AuthenticationService;
+import com.krealll.SpaceY.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
+
+@RestController
+@RequestMapping( value =  "${spring.data.rest.base-path}auth/")
+public class AuthenticationController {
+
+    private final AuthenticationService authenticationService;
+    private final AuthenticationManager authenticationManager;
+    private final TokenProvider tokenProvider;
+    private final UserService userService;
+
+    @Autowired
+    public AuthenticationController(AuthenticationService authenticationService, AuthenticationManager authenticationManager, TokenProvider tokenProvider, UserService userService) {
+        this.authenticationService = authenticationService;
+        this.authenticationManager = authenticationManager;
+        this.tokenProvider = tokenProvider;
+        this.userService = userService;
+    }
+
+    @PostMapping("login")
+    public ResponseEntity login(@RequestBody LoginDTO loginDTO){
+        authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getUsername(),loginDTO.getPassword()));
+        User user = userService.findByLogin(loginDTO.getUsername());
+        if(user == null){
+            throw new UsernameNotFoundException("User with login - " + loginDTO.getUsername() + " now found");
+        } else {
+            Map<String,Object> response;
+            response = authenticationService.resolveToken(user, loginDTO.isRememberMe());
+            return ResponseEntity.ok(response);
+        }
+    }
+
+    
+
+
+
+
+}

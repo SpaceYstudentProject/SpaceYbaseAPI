@@ -3,8 +3,10 @@ package com.krealll.SpaceY.model.dto;
 import lombok.Data;
 
 @Data
-public class AuthenticationRequestDto {
+public class LoginDTO {
 
     private  String username;
     private String password;
+    private boolean rememberMe;
+
 }
