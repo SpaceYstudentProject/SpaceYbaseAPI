@@ -56,4 +56,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return response;
         }
     }
+
+    @Override
+    public boolean logoutAll(Integer userId) {
+        boolean result;
+        int num =  tokenRepository.deleteByUsersId(userId);
+        result = num > 0;
+        return result;
+    }
+
+    @Override
+    public boolean logout(String token) {
+        boolean result;
+        int num =  tokenRepository.deleteByValue(token);
+        result = num > 0;
+        return result;
+    }
 }

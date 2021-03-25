@@ -3,21 +3,21 @@ package com.krealll.SpaceY.controller;
 import com.krealll.SpaceY.model.User;
 
 import com.krealll.SpaceY.model.dto.LoginDTO;
+import com.krealll.SpaceY.model.dto.UserDto;
 import com.krealll.SpaceY.security.TokenProvider;
 import com.krealll.SpaceY.service.AuthenticationService;
 import com.krealll.SpaceY.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+@CrossOrigin
 @RestController
 @RequestMapping( value =  "${spring.data.rest.base-path}auth/")
 public class AuthenticationController {
@@ -49,8 +49,29 @@ public class AuthenticationController {
         }
     }
 
-    
+    @DeleteMapping("logout/{id}")
+    public ResponseEntity logout(@PathVariable(name = "id")Integer id){
+        boolean result;
+        result = authenticationService.logoutAll(id);
+        if(result){
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
 
+    }
+
+    @DeleteMapping("logout/token/{value}")
+    public ResponseEntity logout(@PathVariable(name = "value")String value){
+        boolean result;
+        result = authenticationService.logout(value);
+        if(result){
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+
+    }
 
 
 

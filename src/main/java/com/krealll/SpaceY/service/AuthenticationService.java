@@ -8,4 +8,8 @@ public interface AuthenticationService {
 
     Map<String,Object> resolveToken(User user, boolean rememberMe);
 
+    boolean logoutAll(Integer userId);
+
+    boolean logout(String token);
+
 }
