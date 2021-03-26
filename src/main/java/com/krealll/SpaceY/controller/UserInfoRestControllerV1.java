@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/spacey/api/user/")
+@RequestMapping("${spring.data.rest.base-path}user/")
 public class UserInfoRestControllerV1 {
 
     private final UserService userService;
