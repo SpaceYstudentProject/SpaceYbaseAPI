@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -20,13 +21,14 @@ public class User  extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
     joinColumns = @JoinColumn(name="users_id_user", referencedColumnName = "id"),
-
             inverseJoinColumns = @JoinColumn(name = "roles_id_role", referencedColumnName = "id"))
-    private List<Role> roles;
+    private Set<Role> roles;
 
     @OneToMany(targetEntity = RefreshToken.class)
-    private List<RefreshToken> tokens;
+    private Set<RefreshToken> tokens;
+
+
 }

@@ -29,7 +29,7 @@ public final class TokenInfoFactory {
                 mapToGrantedAuthorities(user.getRoles()));
     }
 
-    public static Set<GrantedAuthority> mapToGrantedAuthorities(List<Role> roles){
+    public static Set<GrantedAuthority> mapToGrantedAuthorities(Set<Role> roles){
         Set<GrantedAuthority> authorities = new HashSet<>();
         authorities.addAll(roles.stream()
                 .map(role -> new SimpleGrantedAuthority(ROLE_AUTHORITY_PREFIX + role.getName()))

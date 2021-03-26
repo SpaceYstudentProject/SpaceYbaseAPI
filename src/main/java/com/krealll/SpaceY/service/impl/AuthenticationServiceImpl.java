@@ -2,6 +2,7 @@ package com.krealll.SpaceY.service.impl;
 
 import com.krealll.SpaceY.model.RefreshToken;
 import com.krealll.SpaceY.model.User;
+import com.krealll.SpaceY.model.dto.RefreshDTO;
 import com.krealll.SpaceY.model.dto.RegisterDTO;
 import com.krealll.SpaceY.repository.TokenRepository;
 import com.krealll.SpaceY.repository.UserRepository;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -88,6 +90,37 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             String accessToken = tokenProvider.createToken(createdUser.getLogin(), createdUser.getRoles());
             response.put("username", createdUser.getLogin());
             response.put("jwt", accessToken);
+            return response;
+        }
+    }
+
+    @Override
+    public Map<String, Object> refreshToken(RefreshDTO refreshDTO) {
+        Map<String, Object> response = new HashMap<>();
+        Optional<RefreshToken> tokenOptional = tokenRepository.findByValue(refreshDTO.getToken());
+        if(tokenOptional.isPresent()){
+            Long expiresIn = tokenOptional.get().getExpiresIn();
+            LocalDateTime created = tokenOptional.get().getCreatedAt();
+            LocalDateTime expCheck = created.plusSeconds(expiresIn);
+            boolean expired = expCheck.isBefore(LocalDateTime.now());
+            if(expired){
+                response.put("error", "401");
+                return response;
+            } else {
+                User user = userRepository.findByLogin(refreshDTO.getUsername());
+                String accessToken = tokenProvider.createToken(user.getLogin(), user.getRoles());
+                tokenRepository.deleteByValue(tokenOptional.get().getValue());
+                RefreshToken refToken = createRefresh(user);
+                response.put("username", user.getLogin());
+                response.put("jwt", accessToken);
+                response.put("ref" , refToken);
+                return response;
+            }
+
+        } else {
+//            User user  = userRepository.findByLogin(refreshDTO.getUsername());
+//            tokenRepository.deleteByUsersId(user.getId());
+            response.put("error","401");
             return response;
         }
     }

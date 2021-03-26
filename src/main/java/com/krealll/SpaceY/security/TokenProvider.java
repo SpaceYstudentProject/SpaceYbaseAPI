@@ -45,7 +45,7 @@ public class TokenProvider {
         secret = Base64.getEncoder().encodeToString(secret.getBytes());
     }
 
-    public  String createToken(String login , List<Role> roles){
+    public  String createToken(String login , Set<Role> roles){
         Claims claims = Jwts.claims().setSubject(login);
         claims.put("authorities", TokenInfoFactory.mapToGrantedAuthorities(roles));
         Date current = new Date();

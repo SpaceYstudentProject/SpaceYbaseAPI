@@ -3,8 +3,8 @@ package com.krealll.SpaceY.controller;
 import com.krealll.SpaceY.model.User;
 
 import com.krealll.SpaceY.model.dto.LoginDTO;
+import com.krealll.SpaceY.model.dto.RefreshDTO;
 import com.krealll.SpaceY.model.dto.RegisterDTO;
-import com.krealll.SpaceY.model.dto.UserDto;
 import com.krealll.SpaceY.security.TokenProvider;
 import com.krealll.SpaceY.service.AuthenticationService;
 import com.krealll.SpaceY.service.UserService;
@@ -16,7 +16,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -32,6 +31,7 @@ public class AuthenticationController {
     @Autowired
     public AuthenticationController(AuthenticationService authenticationService, AuthenticationManager authenticationManager, TokenProvider tokenProvider, UserService userService) {
         this.authenticationService = authenticationService;
+
         this.authenticationManager = authenticationManager;
         this.tokenProvider = tokenProvider;
         this.userService = userService;
@@ -73,12 +73,22 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().build();
         }
     }
-    //
+
 
     @PostMapping("register")
     public ResponseEntity register(@RequestBody RegisterDTO registerDTO){
         Map<String, Object> response;
         response = authenticationService.registerUser(registerDTO);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("refresh")
+    public ResponseEntity refresh(@RequestBody RefreshDTO refreshDTO){
+        Map<String,Object> response;
+        response = authenticationService.refreshToken(refreshDTO);
+        if(response.containsKey("error")){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         return ResponseEntity.ok(response);
     }
 

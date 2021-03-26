@@ -1,6 +1,8 @@
 package com.krealll.SpaceY.service;
 
+import com.krealll.SpaceY.model.RefreshToken;
 import com.krealll.SpaceY.model.User;
+import com.krealll.SpaceY.model.dto.RefreshDTO;
 import com.krealll.SpaceY.model.dto.RegisterDTO;
 
 import java.util.Map;
@@ -14,4 +16,7 @@ public interface AuthenticationService {
     boolean logout(String token);
 
     Map<String, Object> registerUser(RegisterDTO registerDTO);
+
+    Map<String, Object> refreshToken(RefreshDTO refreshDTO);
+
 }
