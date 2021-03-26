@@ -72,12 +72,12 @@ public class AuthenticationController {
         } else {
             return ResponseEntity.badRequest().build();
         }
-
     }
+    //
 
     @PostMapping("register")
     public ResponseEntity register(@RequestBody RegisterDTO registerDTO){
-        Map<String, Object> response = new HashMap<>();
+        Map<String, Object> response;
         response = authenticationService.registerUser(registerDTO);
         return ResponseEntity.ok(response);
     }
