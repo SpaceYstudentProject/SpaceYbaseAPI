@@ -25,7 +25,7 @@ public class UserInfoRestControllerV1 {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<UserDto> getUser(@PathVariable(name = "id") Long id  ){
+    public ResponseEntity<UserDto> getUser(@PathVariable(name = "id") Integer id  ){
         User user = userService.findById(id);
         if(user == null){
             log.warn("User with id - " + id + " was not found");

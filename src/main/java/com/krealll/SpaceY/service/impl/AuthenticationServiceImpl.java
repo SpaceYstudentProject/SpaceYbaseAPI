@@ -2,12 +2,15 @@ package com.krealll.SpaceY.service.impl;
 
 import com.krealll.SpaceY.model.RefreshToken;
 import com.krealll.SpaceY.model.User;
+import com.krealll.SpaceY.model.dto.RegisterDTO;
 import com.krealll.SpaceY.repository.TokenRepository;
+import com.krealll.SpaceY.repository.UserRepository;
 import com.krealll.SpaceY.security.TokenProvider;
 import com.krealll.SpaceY.service.AuthenticationService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,11 +27,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Value("${spacey.ref.ttl}")
     private Long refTokenTTL;
 
+    private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
     private final TokenProvider tokenProvider;
 
     @Autowired
-    public AuthenticationServiceImpl(TokenRepository tokenRepository, TokenProvider tokenProvider) {
+    public AuthenticationServiceImpl(BCryptPasswordEncoder encoder, UserRepository userRepository, TokenRepository tokenRepository, TokenProvider tokenProvider) {
+        this.userRepository = userRepository;
         this.tokenRepository = tokenRepository;
         this.tokenProvider = tokenProvider;
     }
@@ -39,12 +44,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if(rememberMe){
             RefreshToken refreshToken = new RefreshToken();
             String accessToken = tokenProvider.createToken(user.getLogin(), user.getRoles());
-            String refTokenValue = RandomStringUtils.randomAlphanumeric(refTokenLength);
-            refreshToken.setValue(refTokenValue);
-            refreshToken.setExpiresIn(refTokenTTL);
-            refreshToken.setCreatedAt(LocalDateTime.now(ZoneId.of("UTC")));
-            refreshToken.setUsersId(user.getId());
-            RefreshToken refToken = tokenRepository.save(refreshToken);
+            RefreshToken refToken = createRefresh(user);
             response.put("username", user.getLogin());
             response.put("jwt", accessToken);
             response.put("ref" , refToken);
@@ -71,5 +71,35 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         int num =  tokenRepository.deleteByValue(token);
         result = num > 0;
         return result;
+    }
+
+    @Override
+    public Map<String, Object> registerUser(RegisterDTO registerDTO) {
+        User createdUser = userRepository.save(registerDTO.toUser());
+        Map<String, Object> response = new HashMap<>();
+        if(registerDTO.isRememberMe()){
+            String accessToken = tokenProvider.createToken(createdUser.getLogin(), createdUser.getRoles());
+            RefreshToken refToken = createRefresh(createdUser);
+            response.put("username", createdUser.getLogin());
+            response.put("jwt", accessToken);
+            response.put("ref" , refToken);
+            return response;
+        } else {
+            String accessToken = tokenProvider.createToken(createdUser.getLogin(), createdUser.getRoles());
+            response.put("username", createdUser.getLogin());
+            response.put("jwt", accessToken);
+            return response;
+        }
+    }
+
+
+    private RefreshToken createRefresh(User user){
+        RefreshToken refreshToken = new RefreshToken();
+        String refTokenValue = RandomStringUtils.randomAlphanumeric(refTokenLength);
+        refreshToken.setValue(refTokenValue);
+        refreshToken.setExpiresIn(refTokenTTL);
+        refreshToken.setCreatedAt(LocalDateTime.now(ZoneId.of("UTC")));
+        refreshToken.setUsersId(user.getId());
+        return  tokenRepository.save(refreshToken);
     }
 }

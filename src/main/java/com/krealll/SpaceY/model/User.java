@@ -1,5 +1,6 @@
 package com.krealll.SpaceY.model;
 
+import com.krealll.SpaceY.model.type.UserStatus;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -19,7 +20,7 @@ public class User  extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
     joinColumns = @JoinColumn(name="users_id_user", referencedColumnName = "id"),
 

@@ -1,7 +1,7 @@
 package com.krealll.SpaceY.model.dto;
 
 import com.krealll.SpaceY.model.User;
-import com.krealll.SpaceY.model.UserStatus;
+import com.krealll.SpaceY.model.type.UserStatus;
 import lombok.Data;
 
 @Data

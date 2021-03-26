@@ -2,7 +2,7 @@ package com.krealll.SpaceY.security;
 
 import com.krealll.SpaceY.model.Role;
 import com.krealll.SpaceY.model.User;
-import com.krealll.SpaceY.model.UserStatus;
+import com.krealll.SpaceY.model.type.UserStatus;
 import com.krealll.SpaceY.security.jwt.JwtUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

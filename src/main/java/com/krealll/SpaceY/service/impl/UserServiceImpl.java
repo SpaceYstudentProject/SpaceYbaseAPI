@@ -18,28 +18,15 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
-    private BCryptPasswordEncoder encoder;
     private RoleRepository roleRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder encoder, RoleRepository roleRepository) {
+    public UserServiceImpl(UserRepository userRepository,  RoleRepository roleRepository) {
         this.userRepository = userRepository;
-        this.encoder = encoder;
         this.roleRepository = roleRepository;
     }
 
-    @Override
-    public User register(User user) {
-        Role userRole = roleRepository.findByName("USER");
-        List<Role> userRoles = new ArrayList<>();
-        userRoles.add(userRole);
 
-        user.setPassword(encoder.encode(user.getPassword()));
-        user.setRoles(userRoles);
-        User registered = userRepository.save(user);
-
-        return registered;
-    }
 
     @Override
     public List<User> findAll() {
@@ -54,7 +41,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(Long id) {
+    public User findById(Integer id) {
         User result = userRepository.findById(id).orElse(null);
         if(result == null){
             log.warn("No such user: {}", id);
@@ -64,7 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Integer id) {
         userRepository.deleteById(id);
     }
 }

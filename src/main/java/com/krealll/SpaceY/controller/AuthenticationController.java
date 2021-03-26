@@ -3,6 +3,7 @@ package com.krealll.SpaceY.controller;
 import com.krealll.SpaceY.model.User;
 
 import com.krealll.SpaceY.model.dto.LoginDTO;
+import com.krealll.SpaceY.model.dto.RegisterDTO;
 import com.krealll.SpaceY.model.dto.UserDto;
 import com.krealll.SpaceY.security.TokenProvider;
 import com.krealll.SpaceY.service.AuthenticationService;
@@ -15,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @CrossOrigin
@@ -73,6 +75,11 @@ public class AuthenticationController {
 
     }
 
-
+    @PostMapping("register")
+    public ResponseEntity register(@RequestBody RegisterDTO registerDTO){
+        Map<String, Object> response = new HashMap<>();
+        response = authenticationService.registerUser(registerDTO);
+        return ResponseEntity.ok(response);
+    }
 
 }
