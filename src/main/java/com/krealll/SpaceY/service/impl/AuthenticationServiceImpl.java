@@ -118,8 +118,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             }
 
         } else {
-//            User user  = userRepository.findByLogin(refreshDTO.getUsername());
-//            tokenRepository.deleteByUsersId(user.getId());
+            User user  = userRepository.findByLogin(refreshDTO.getUsername());
+            tokenRepository.deleteByUsersId(user.getId());
             response.put("error","401");
             return response;
         }
