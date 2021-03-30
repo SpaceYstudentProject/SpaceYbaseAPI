@@ -2,7 +2,7 @@ package com.krealll.SpaceY.security;
 
 import com.krealll.SpaceY.model.User;
 import com.krealll.SpaceY.security.jwt.JwtUser;
-import com.krealll.SpaceY.service.UserService;
+import com.krealll.SpaceY.service.impl.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

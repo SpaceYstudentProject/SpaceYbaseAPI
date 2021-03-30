@@ -3,8 +3,8 @@ package com.krealll.SpaceY.model.dto;
 import lombok.Data;
 
 @Data
-public class PasswordDto {
+public class UpdateDto {
 
-    String password;
-
+    String path;
+    String value;
 }

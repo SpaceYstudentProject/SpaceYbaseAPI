@@ -1,4 +1,4 @@
-package com.krealll.SpaceY.service.impl;
+package com.krealll.SpaceY.service;
 
 import com.krealll.SpaceY.model.RefreshToken;
 import com.krealll.SpaceY.model.User;
@@ -7,7 +7,7 @@ import com.krealll.SpaceY.model.dto.RegisterDTO;
 import com.krealll.SpaceY.repository.TokenRepository;
 import com.krealll.SpaceY.repository.UserRepository;
 import com.krealll.SpaceY.security.TokenProvider;
-import com.krealll.SpaceY.service.AuthenticationService;
+import com.krealll.SpaceY.service.impl.AuthenticationService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

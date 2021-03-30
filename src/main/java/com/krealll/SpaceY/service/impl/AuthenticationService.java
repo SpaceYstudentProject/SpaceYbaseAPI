@@ -1,4 +1,4 @@
-package com.krealll.SpaceY.service;
+package com.krealll.SpaceY.service.impl;
 
 import com.krealll.SpaceY.model.RefreshToken;
 import com.krealll.SpaceY.model.User;

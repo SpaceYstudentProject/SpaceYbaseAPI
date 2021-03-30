@@ -1,17 +1,19 @@
 package com.krealll.SpaceY.controller;
 
+import com.krealll.SpaceY.model.Role;
 import com.krealll.SpaceY.model.User;
-import com.krealll.SpaceY.model.dto.PasswordDto;
+import com.krealll.SpaceY.model.dto.UpdateDto;
 import com.krealll.SpaceY.model.dto.UserDto;
-import com.krealll.SpaceY.service.UserService;
+import com.krealll.SpaceY.model.type.UserStatus;
+import com.krealll.SpaceY.repository.UserRepository;
+import com.krealll.SpaceY.service.impl.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @RestController
@@ -19,10 +21,11 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
-
+    private final UserRepository userRepository;
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/{id}")
@@ -46,14 +49,15 @@ public class UserController {
         return new ResponseEntity<>(users,HttpStatus.OK);
     }
 
-    @PatchMapping("{id}/changePassword")
-    public ResponseEntity changePassword(@PathVariable(name = "id") Integer id, @RequestBody PasswordDto password){
+    @PatchMapping("/{id}")
+    public ResponseEntity updateUser(@PathVariable(name = "id") Integer id, @RequestBody Map<String, Object> fields){
         Map<String,Object> response;
-        response = userService.changePassword(password.getPassword(), id);
+        response = userService.updateUser(id,fields);
         if(response.containsKey("error")){
             return ResponseEntity.status((HttpStatus) response.get("error")).build();
         }
         return ResponseEntity.ok(response);
     }
+
 
 }

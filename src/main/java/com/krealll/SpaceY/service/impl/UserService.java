@@ -1,6 +1,7 @@
-package com.krealll.SpaceY.service;
+package com.krealll.SpaceY.service.impl;
 
 import com.krealll.SpaceY.model.User;
+import com.krealll.SpaceY.model.dto.UpdateDto;
 
 import java.util.List;
 import java.util.Map;
@@ -16,5 +17,8 @@ public interface UserService {
 
     void delete(Integer id);
 
-    Map<String,Object> changePassword(String password, Integer id);
+    Map<String,Object> updateUser(Integer id, Map<String, Object> fields);
+
+
+
 }
