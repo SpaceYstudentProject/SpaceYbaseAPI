@@ -1,5 +1,6 @@
 package com.krealll.SpaceY.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ public class Permission extends BaseEntity{
             joinColumns = @JoinColumn(name="roles_id_role", referencedColumnName = "id"),
 
             inverseJoinColumns = @JoinColumn(name = "permissions_id_permission", referencedColumnName = "id"))
+    @JsonIgnore
     private Set<Role> roles;
 
 }

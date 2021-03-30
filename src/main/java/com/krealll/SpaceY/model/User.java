@@ -2,9 +2,11 @@ package com.krealll.SpaceY.model;
 
 import com.krealll.SpaceY.model.type.UserStatus;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -27,7 +29,9 @@ public class User  extends BaseEntity{
             inverseJoinColumns = @JoinColumn(name = "roles_id_role", referencedColumnName = "id"))
     private Set<Role> roles;
 
-    @OneToMany(targetEntity = RefreshToken.class)
+
+    @OneToMany(targetEntity = RefreshToken.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "users_id")
     private Set<RefreshToken> tokens;
 
 

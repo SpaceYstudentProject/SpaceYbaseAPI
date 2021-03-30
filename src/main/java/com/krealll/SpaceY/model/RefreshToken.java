@@ -2,6 +2,7 @@ package com.krealll.SpaceY.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.Getter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -23,8 +24,9 @@ public class RefreshToken  {
     private LocalDateTime createdAt;
 
     @JoinColumn(name = "users_id", referencedColumnName = "id")
-    @Fetch(FetchMode.SELECT)
     @JsonIgnore
+    @Column(name = "users_id")
     private Integer usersId;
+
 
 }

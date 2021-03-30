@@ -4,6 +4,9 @@ import com.krealll.SpaceY.model.User;
 import com.krealll.SpaceY.model.type.UserStatus;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 public class UserDto {
 
@@ -19,6 +22,16 @@ public class UserDto {
         user.setLogin(login);
         user.setStatus(userStatus);
         return user;
+    }
+
+    public static List<UserDto> fromUsers(List<User> users){
+        List<UserDto> userDtos = new ArrayList<>();
+        if(users != null){
+            for (User user: users) {
+                userDtos.add(UserDto.fromUser(user));
+            }
+        }
+        return userDtos;
     }
 
     public static UserDto fromUser( User user) {

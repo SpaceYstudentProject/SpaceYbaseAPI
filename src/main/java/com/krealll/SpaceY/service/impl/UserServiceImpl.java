@@ -1,17 +1,16 @@
 package com.krealll.SpaceY.service.impl;
 
-import com.krealll.SpaceY.model.Role;
 import com.krealll.SpaceY.model.User;
+import com.krealll.SpaceY.model.dto.UserDto;
 import com.krealll.SpaceY.repository.RoleRepository;
 import com.krealll.SpaceY.repository.UserRepository;
 import com.krealll.SpaceY.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -51,5 +50,29 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(Integer id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public Map<String,Object> changePassword(String password, Integer id) {
+        Map<String,Object> responce = new HashMap<>();
+        Optional<User> userOptional = userRepository.findById(id);
+        if(userOptional.isPresent()){
+            boolean result = userRepository.changePassword(password,id) > 0;
+            if(!result){
+                responce.put("error", HttpStatus.BAD_REQUEST);
+                return responce;
+            }
+            Optional<User> changedUserOptional = userRepository.findById(id);
+            if(changedUserOptional.isPresent()){
+                responce.put("user", UserDto.fromUser(changedUserOptional.get()));
+                return responce;
+            } else {
+                responce.put("error", HttpStatus.BAD_REQUEST);
+                return responce;
+            }
+        } else {
+            responce.put("error",HttpStatus.NOT_FOUND);
+            return responce;
+        }
     }
 }

@@ -63,9 +63,6 @@ public class TokenProvider {
     public Authentication getAuthentication(String token){
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(getLogin(token));
         Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
-//        for (int i = 0; i < authorities.size(); i++) {
-            log.info("Users authorities - " + authorities.toString());
-//        }
         return new UsernamePasswordAuthenticationToken(userDetails,"", userDetails.getAuthorities());
     }
 
@@ -73,7 +70,7 @@ public class TokenProvider {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
     }
 
-    public List<String> getRoles(String token){
+    public List<String> getAuthorities(String token){
         List<String> roles = (List<String>)Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().get("roles");
         if(roles == null){
             log.error("ERRRRRRRR");

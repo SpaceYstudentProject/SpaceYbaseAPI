@@ -21,7 +21,11 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
     private final TokenProvider tokenProvider;
     private final JwtTokenFilter jwtTokenFilter;
-    private static final String LOGIN_ENDPOINT = "${spring.data.rest.base-path}auth/**";
+    private static final String LOGIN_ENDPOINT = "${spring.data.rest.base-path}auth/";
+    private static final String LOGOUT = LOGIN_ENDPOINT + "logout**";
+    private static final String REFRESH = LOGIN_ENDPOINT + "refresh";
+    private static final String REGISTER = LOGIN_ENDPOINT + "register";
+    private static final String LOGIN = LOGIN_ENDPOINT + "login";
     private static final String USER_ENDPOINT = "${spring.data.rest.base-path}user/**";
     private static final String NEW_ENDPOINT = "${spring.data.rest.base-path}test/**";
 
@@ -52,8 +56,11 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(LOGIN_ENDPOINT).permitAll()
-                .antMatchers(USER_ENDPOINT).hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+                .antMatchers(LOGOUT).hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+                .antMatchers(LOGIN).permitAll()
+                .antMatchers(REFRESH).hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+                .antMatchers(REGISTER).permitAll()
+                .antMatchers(USER_ENDPOINT).permitAll()
                 .antMatchers(NEW_ENDPOINT).hasAuthority("DO_STUFF")
                 .anyRequest().permitAll()
                 .and()

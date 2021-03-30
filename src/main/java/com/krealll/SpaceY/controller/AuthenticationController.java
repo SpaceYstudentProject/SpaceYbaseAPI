@@ -31,7 +31,6 @@ public class AuthenticationController {
     @Autowired
     public AuthenticationController(AuthenticationService authenticationService, AuthenticationManager authenticationManager, TokenProvider tokenProvider, UserService userService) {
         this.authenticationService = authenticationService;
-
         this.authenticationManager = authenticationManager;
         this.tokenProvider = tokenProvider;
         this.userService = userService;

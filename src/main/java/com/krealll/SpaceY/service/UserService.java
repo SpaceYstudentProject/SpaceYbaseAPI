@@ -3,6 +3,7 @@ package com.krealll.SpaceY.service;
 import com.krealll.SpaceY.model.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
 
@@ -14,4 +15,6 @@ public interface UserService {
     User findById(Integer id);
 
     void delete(Integer id);
+
+    Map<String,Object> changePassword(String password, Integer id);
 }
