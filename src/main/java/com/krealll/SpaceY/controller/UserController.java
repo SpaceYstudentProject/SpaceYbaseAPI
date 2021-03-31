@@ -4,6 +4,7 @@ import com.krealll.SpaceY.model.Role;
 import com.krealll.SpaceY.model.User;
 import com.krealll.SpaceY.model.dto.UpdateDto;
 import com.krealll.SpaceY.model.dto.UserDto;
+import com.krealll.SpaceY.model.dto.UserQueryDto;
 import com.krealll.SpaceY.model.type.UserStatus;
 import com.krealll.SpaceY.repository.UserRepository;
 import com.krealll.SpaceY.service.impl.UserService;
@@ -59,5 +60,16 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-
+    @PostMapping("/query")
+    public ResponseEntity queryUsers(@RequestBody UserQueryDto userQueryDto){
+        if(userQueryDto.getQuery() == null || userQueryDto.getOptions() == null){
+            return ResponseEntity.badRequest().build();
+        }
+        Map<String,Object> response;
+        response = userService.queryFind(userQueryDto);
+        if(response.containsKey("error")){
+            return ResponseEntity.status((HttpStatus) response.get("error")).build();
+        }
+        return ResponseEntity.ok(response);
+    }
 }
