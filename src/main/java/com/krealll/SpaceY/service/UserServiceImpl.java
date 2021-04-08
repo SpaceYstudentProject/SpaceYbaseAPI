@@ -1,11 +1,11 @@
 package com.krealll.SpaceY.service;
 
-import com.krealll.SpaceY.controller.RequestParameters;
-import com.krealll.SpaceY.controller.ResponseParameters;
-import com.krealll.SpaceY.model.DtoParameters;
+import com.krealll.SpaceY.controller.parameters.RequestParameters;
+import com.krealll.SpaceY.controller.parameters.ResponseParameters;
+import com.krealll.SpaceY.model.dto.DTOParameters;
 import com.krealll.SpaceY.model.User;
-import com.krealll.SpaceY.model.dto.UserDto;
-import com.krealll.SpaceY.model.dto.UserQueryDto;
+import com.krealll.SpaceY.model.dto.UserDTO;
+import com.krealll.SpaceY.model.dto.UserQueryDTO;
 import com.krealll.SpaceY.model.type.UserStatus;
 import com.krealll.SpaceY.repository.UserRepository;
 import com.krealll.SpaceY.service.impl.UserService;
@@ -58,14 +58,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Map<String, Object> updateUser(Integer id, Map<String, Object> fields) {
-        Map<String, Object> responce = new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             if (fields.containsKey(RequestParameters.ID) ||
                     fields.containsKey(RequestParameters.ROLES) ||
                     fields.containsKey(RequestParameters.TOKENS)) {
-                responce.put(ResponseParameters.ERROR, HttpStatus.BAD_REQUEST);
-                return responce;
+                response.put(ResponseParameters.ERROR, HttpStatus.BAD_REQUEST);
+                return response;
+                //TODO add validation here instead
             }
             for (Map.Entry<String, Object> mapEntry : fields.entrySet()) {
                 Field field = ReflectionUtils.findField(User.class, mapEntry.getKey());
@@ -76,25 +77,25 @@ public class UserServiceImpl implements UserService {
                         field.setAccessible(true);
                         ReflectionUtils.setField(field, userOptional.get(), mapEntry.getValue());
                     } else {
-                        responce.put(ResponseParameters.ERROR, HttpStatus.BAD_REQUEST);
-                        return responce;
+                        response.put(ResponseParameters.ERROR, HttpStatus.BAD_REQUEST);
+                        return response;
                     }
                 } else {
-                    responce.put(ResponseParameters.ERROR, HttpStatus.BAD_REQUEST);
-                    return responce;
+                    response.put(ResponseParameters.ERROR, HttpStatus.BAD_REQUEST);
+                    return response;
                 }
             }
             User updatedUser = userRepository.save(userOptional.get());
-            responce.put(ResponseParameters.USER, UserDto.fromUser(updatedUser));
-            return responce;
+            response.put(ResponseParameters.USER, UserDTO.fromUser(updatedUser));
+            return response;
         } else {
-            responce.put(ResponseParameters.ERROR, HttpStatus.NOT_FOUND);
-            return responce;
+            response.put(ResponseParameters.ERROR, HttpStatus.NOT_FOUND);
+            return response;
         }
     }
 
     @Override
-    public Map<String, Object> queryFind(UserQueryDto userQueryDto) {
+    public Map<String, Object> queryFind(UserQueryDTO userQueryDto) {
         Map<String, Object> response = new HashMap<>();
         List<User> users;
         Map<String, Object> query = userQueryDto.getQuery();
@@ -106,48 +107,48 @@ public class UserServiceImpl implements UserService {
         }
 
         if (options.isEmpty()) {
-            if (query.containsKey(DtoParameters.PAGE_NUM) && query.containsKey(DtoParameters.PAGE_SIZE)) {
-                Pageable findUsersPage = PageRequest.of(Integer.parseInt((String) query.get(DtoParameters.PAGE_NUM)),
-                        Integer.parseInt((String) query.get(DtoParameters.PAGE_SIZE)));
+            if (query.containsKey(DTOParameters.PAGE_NUM) && query.containsKey(DTOParameters.PAGE_SIZE)) {
+                Pageable findUsersPage = PageRequest.of(Integer.parseInt((String) query.get(DTOParameters.PAGE_NUM)),
+                        Integer.parseInt((String) query.get(DTOParameters.PAGE_SIZE)));
                 users = userRepository.findAll(findUsersPage).getContent();
-                response.put(ResponseParameters.USERS, UserDto.fromUsers(users));
+                response.put(ResponseParameters.USERS, UserDTO.fromUsers(users));
                 return response;
-            } else if (query.containsKey(DtoParameters.PAGE_SIZE)) {
+            } else if (query.containsKey(DTOParameters.PAGE_SIZE)) {
                 Pageable findUsersPage = PageRequest.of(0,
-                        Integer.parseInt((String) query.get(DtoParameters.PAGE_SIZE)));
+                        Integer.parseInt((String) query.get(DTOParameters.PAGE_SIZE)));
                 users = userRepository.findAll(findUsersPage).getContent();
-                response.put(ResponseParameters.USERS, UserDto.fromUsers(users));
+                response.put(ResponseParameters.USERS, UserDTO.fromUsers(users));
                 return response;
             } else {
                 response.put(ResponseParameters.ERROR, HttpStatus.BAD_REQUEST);
                 return response;
             }
         } else if (!query.isEmpty()) {
-            if (options.containsKey(DtoParameters.USERNAME)) {
-                if (options.containsKey(DtoParameters.STATUS)) {
+            if (options.containsKey(DTOParameters.USERNAME)) {
+                if (options.containsKey(DTOParameters.STATUS)) {
                     response.put(ResponseParameters.ERROR, HttpStatus.BAD_REQUEST);
                     return response;
                 }
-                users = userRepository.findAllByLogin((String) options.get(DtoParameters.USERNAME));
-                response.put(ResponseParameters.USERS, UserDto.fromUsers(users));
+                users = userRepository.findAllByLogin((String) options.get(DTOParameters.USERNAME));
+                response.put(ResponseParameters.USERS, UserDTO.fromUsers(users));
                 return response;
-            } else if (options.containsKey(DtoParameters.STATUS)) {
-                if (query.containsKey(DtoParameters.PAGE_SIZE) && query.containsKey(DtoParameters.PAGE_NUM)) {
-                    Pageable findUsersPage = PageRequest.of(Integer.parseInt((String) query.get(DtoParameters.PAGE_NUM)),
-                            Integer.parseInt((String) query.get(DtoParameters.PAGE_SIZE)));
+            } else if (options.containsKey(DTOParameters.STATUS)) {
+                if (query.containsKey(DTOParameters.PAGE_SIZE) && query.containsKey(DTOParameters.PAGE_NUM)) {
+                    Pageable findUsersPage = PageRequest.of(Integer.parseInt((String) query.get(DTOParameters.PAGE_NUM)),
+                            Integer.parseInt((String) query.get(DTOParameters.PAGE_SIZE)));
                     users = userRepository
-                            .findAllByStatus(UserStatus.valueOf((String) options.get(DtoParameters.STATUS)), findUsersPage);
-                    response.put(ResponseParameters.USERS, UserDto.fromUsers(users));
+                            .findAllByStatus(UserStatus.valueOf((String) options.get(DTOParameters.STATUS)), findUsersPage);
+                    response.put(ResponseParameters.USERS, UserDTO.fromUsers(users));
                     return response;
-                } else if (query.containsKey(DtoParameters.PAGE_SIZE)) {
-                    Pageable findUsersPage = PageRequest.of(0, Integer.parseInt((String) query.get(DtoParameters.PAGE_SIZE)));
+                } else if (query.containsKey(DTOParameters.PAGE_SIZE)) {
+                    Pageable findUsersPage = PageRequest.of(0, Integer.parseInt((String) query.get(DTOParameters.PAGE_SIZE)));
                     users = userRepository
-                            .findAllByStatus(UserStatus.valueOf((String) options.get(DtoParameters.STATUS)), findUsersPage);
-                    response.put(ResponseParameters.USERS, UserDto.fromUsers(users));
+                            .findAllByStatus(UserStatus.valueOf((String) options.get(DTOParameters.STATUS)), findUsersPage);
+                    response.put(ResponseParameters.USERS, UserDTO.fromUsers(users));
                     return response;
                 } else {
-                    users = userRepository.findAllByStatus(UserStatus.valueOf((String) options.get(DtoParameters.STATUS)));
-                    response.put(ResponseParameters.USERS, UserDto.fromUsers(users));
+                    users = userRepository.findAllByStatus(UserStatus.valueOf((String) options.get(DTOParameters.STATUS)));
+                    response.put(ResponseParameters.USERS, UserDTO.fromUsers(users));
                     return response;
                 }
             }

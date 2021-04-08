@@ -1,8 +1,9 @@
 package com.krealll.SpaceY.controller;
 
+import com.krealll.SpaceY.controller.parameters.ResponseParameters;
 import com.krealll.SpaceY.model.User;
-import com.krealll.SpaceY.model.dto.UserDto;
-import com.krealll.SpaceY.model.dto.UserQueryDto;
+import com.krealll.SpaceY.model.dto.UserDTO;
+import com.krealll.SpaceY.model.dto.UserQueryDTO;
 import com.krealll.SpaceY.service.impl.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,20 +26,20 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUser(@PathVariable(name = "id") Integer id  ){
+    public ResponseEntity<UserDTO> getUser(@PathVariable(name = "id") Integer id  ){
         User user = userService.findById(id);
         if(user == null){
             log.warn("User with id - " + id + " was not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        UserDto userDto = UserDto.fromUser(user);
+        UserDTO userDto = UserDTO.fromUser(user);
         return new ResponseEntity<>(userDto,HttpStatus.OK);
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<UserDto>> getUsers(){
-        List<UserDto> users;
-        users = UserDto.fromUsers(userService.findAll());
+    public ResponseEntity<List<UserDTO>> getUsers(){
+        List<UserDTO> users;
+        users = UserDTO.fromUsers(userService.findAll());
         if(users.size() == 0){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -56,7 +57,7 @@ public class UserController {
     }
 
     @PostMapping("/query")
-    public ResponseEntity queryUsers(@RequestBody UserQueryDto userQueryDto){
+    public ResponseEntity queryUsers(@RequestBody UserQueryDTO userQueryDto){
         if(userQueryDto.getQuery() == null || userQueryDto.getOptions() == null){
             return ResponseEntity.badRequest().build();
         }

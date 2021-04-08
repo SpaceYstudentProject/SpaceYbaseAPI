@@ -1,6 +1,6 @@
 package com.krealll.SpaceY.service;
 
-import com.krealll.SpaceY.model.DtoParameters;
+import com.krealll.SpaceY.model.dto.DTOParameters;
 
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -37,12 +37,12 @@ public class QueryValidator {
                 return false;
             }
         }
-        if(options.containsKey(DtoParameters.STATUS)){
-            String status = (String)options.get(DtoParameters.STATUS);
+        if(options.containsKey(DTOParameters.STATUS)){
+            String status = (String)options.get(DTOParameters.STATUS);
             result = validateStatus(status);
             if(result){
-                if(options.containsKey(DtoParameters.USERNAME)){
-                    String name = (String)options.get(DtoParameters.USERNAME);
+                if(options.containsKey(DTOParameters.USERNAME)){
+                    String name = (String)options.get(DTOParameters.USERNAME);
                     result = validateUsername(name);
                     return result;
                 }

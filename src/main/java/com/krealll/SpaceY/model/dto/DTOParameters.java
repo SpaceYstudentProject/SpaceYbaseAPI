@@ -1,6 +1,6 @@
-package com.krealll.SpaceY.model;
+package com.krealll.SpaceY.model.dto;
 
-public class DtoParameters {
+public class DTOParameters {
 
     public static final String QUERY = "query";
     public static final String OPTIONS = "options";

@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Map;
 
 @Data
-public class UserQueryDto {
+public class UserQueryDTO {
 
     Map<String,Object> query;
     Map<String,Object> options;

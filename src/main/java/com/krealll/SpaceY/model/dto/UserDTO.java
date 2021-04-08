@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class UserDto {
+public class UserDTO {
 
     private Integer id;
     private String login;
@@ -24,18 +24,18 @@ public class UserDto {
         return user;
     }
 
-    public static List<UserDto> fromUsers(List<User> users){
-        List<UserDto> userDtos = new ArrayList<>();
+    public static List<UserDTO> fromUsers(List<User> users){
+        List<UserDTO> userDtos = new ArrayList<>();
         if(users != null){
             for (User user: users) {
-                userDtos.add(UserDto.fromUser(user));
+                userDtos.add(UserDTO.fromUser(user));
             }
         }
         return userDtos;
     }
 
-    public static UserDto fromUser( User user) {
-        UserDto userDto = new UserDto();
+    public static UserDTO fromUser(User user) {
+        UserDTO userDto = new UserDTO();
         userDto.setId(user.getId());
         userDto.setUserStatus(user.getStatus());
         userDto.setEmail(user.getEmail());

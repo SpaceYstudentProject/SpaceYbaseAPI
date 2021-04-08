@@ -20,23 +20,21 @@ import java.util.Map;
 
 
 @RestController
-@RequestMapping( value =  "${spring.data.rest.base-path}auth/")
+@RequestMapping( value =  "${spring.data.rest.base-path}auth")
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
     private final AuthenticationManager authenticationManager;
-    private final TokenProvider tokenProvider;
     private final UserService userService;
 
     @Autowired
     public AuthenticationController(AuthenticationService authenticationService, AuthenticationManager authenticationManager, TokenProvider tokenProvider, UserService userService) {
         this.authenticationService = authenticationService;
         this.authenticationManager = authenticationManager;
-        this.tokenProvider = tokenProvider;
         this.userService = userService;
     }
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginDTO loginDTO){
         authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getUsername(),loginDTO.getPassword()));
@@ -50,7 +48,7 @@ public class AuthenticationController {
         }
     }
 
-    @DeleteMapping("logout/{id}")
+    @DeleteMapping("/logout/{id}")
     public ResponseEntity logout(@PathVariable(name = "id")Integer id){
         boolean result;
         result = authenticationService.logoutAll(id);
@@ -62,7 +60,7 @@ public class AuthenticationController {
 
     }
 
-    @DeleteMapping("logout/token/{value}")
+    @DeleteMapping("/logout/token/{value}")
     public ResponseEntity logout(@PathVariable(name = "value")String value){
         boolean result;
         result = authenticationService.logout(value);
@@ -74,14 +72,14 @@ public class AuthenticationController {
     }
 
 
-    @PostMapping("register")
+    @PostMapping("/register")
     public ResponseEntity register(@RequestBody RegisterDTO registerDTO){
         Map<String, Object> response;
         response = authenticationService.registerUser(registerDTO);
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("refresh")
+    @DeleteMapping("/refresh")
     public ResponseEntity refresh(@RequestBody RefreshDTO refreshDTO){
         Map<String,Object> response;
         response = authenticationService.refreshToken(refreshDTO);
