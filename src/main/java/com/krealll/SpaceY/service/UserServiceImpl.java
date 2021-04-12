@@ -71,15 +71,8 @@ public class UserServiceImpl implements UserService {
             for (Map.Entry<String, Object> mapEntry : fields.entrySet()) {
                 Field field = ReflectionUtils.findField(User.class, mapEntry.getKey());
                 if (field != null) {
-                    if (!field.getName().equals(RequestParameters.ID) &&
-                            !field.getName().equals(RequestParameters.ROLES) &&
-                            !field.getName().equals(RequestParameters.TOKENS)) {
-                        field.setAccessible(true);
-                        ReflectionUtils.setField(field, userOptional.get(), mapEntry.getValue());
-                    } else {
-                        response.put(ResponseParameters.ERROR, HttpStatus.BAD_REQUEST);
-                        return response;
-                    }
+                    field.setAccessible(true);
+                    ReflectionUtils.setField(field, userOptional.get(), mapEntry.getValue());
                 } else {
                     response.put(ResponseParameters.ERROR, HttpStatus.BAD_REQUEST);
                     return response;
